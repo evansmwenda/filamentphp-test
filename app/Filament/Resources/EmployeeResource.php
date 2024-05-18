@@ -6,6 +6,8 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Models\Employee;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,35 +25,36 @@ class EmployeeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('country_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('state_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('city_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('department_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('first_name')
+                Section::make('User Details')
+                ->description('Put the username details in')
+                ->schema([
+                    Forms\Components\TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('last_name')
+                    Forms\Components\TextInput::make('last_name')
+                        ->required()
+                        ->maxLength(255),
+                ])->columns(2),
+
+                Section::make('Address Details')
+                ->description('Add shipping address information')
+                ->schema([
+                    TextInput::make('address')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('zip_code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('date_of_birth')
+                    TextInput::make('zip_code')
+                        ->required()
+                        ->maxLength(255)
+                ])->columns(2),
+                Section::make('Dates')
+                ->description('Add date details')
+                ->schema([
+                    Forms\Components\DatePicker::make('date_of_birth')
                     ->required(),
-                Forms\Components\DatePicker::make('date_hired')
-                    ->required(),
-            ]);
+                    Forms\Components\DatePicker::make('date_hired')
+                        ->required(),
+                ])->columns(2),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
